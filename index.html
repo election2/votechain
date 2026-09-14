@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>VoteChain | Digital Voting</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <img src="assets/logo.svg" alt="VoteChain Logo">
+  <h2>VoteChain</h2>
+  <p>Preparing voting system...</p>
+
+  <div class="loader-bar">
+    <div class="loader-progress"></div>
+  </div>
+</div>
+
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <img src="assets/logo.svg" class="logo" alt="VoteChain">
+      <div>
+        <strong>VoteChain</strong>
+        <small>Digital Voting</small>
+      </div>
+    </div>
+
+    <span id="statusBadge">Ready</span>
+  </header>
+
+
+  <main>
+
+    <!-- HOME -->
+    <section id="home" class="screen active">
+
+      <div class="hero">
+
+        <div class="badge">DEMO ELECTION</div>
+
+        <h1>Your Vote.<br>Private & Verified.</h1>
+
+        <p>
+          A modern digital voting prototype for
+          community and private elections.
+        </p>
+
+        <div class="steps-card">
+
+          <div class="step">
+            <span>1</span>
+            <div>
+              <strong>Verify</strong>
+              <small>Verify voter eligibility</small>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>2</span>
+            <div>
+              <strong>Liveness</strong>
+              <small>Complete camera verification</small>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>3</span>
+            <div>
+              <strong>Vote</strong>
+              <small>Select your party</small>
+            </div>
+          </div>
+
+        </div>
+
+        <button onclick="startVoting()">
+          Start Voting →
+        </button>
+
+        <button class="secondary" onclick="openResults()">
+          📊 View Results
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- IDENTITY -->
+    <section id="verify" class="screen">
+
+      <button class="back" onclick="showScreen('home')">
+        ← Back
+      </button>
+
+      <div class="page-header">
+        <span>STEP 1 OF 3</span>
+        <h1>Verify Identity 🪪</h1>
+        <p>Select an identification method.</p>
+      </div>
+
+
+      <button class="option" onclick="selectDocument('National ID', this)">
+        <div class="option-icon">🪪</div>
+        <div>
+          <strong>National ID</strong>
+          <small>Government-issued identification</small>
+        </div>
+      </button>
+
+
+      <button class="option" onclick="selectDocument('Passport', this)">
+        <div class="option-icon">🛂</div>
+        <div>
+          <strong>Passport</strong>
+          <small>Passport identification</small>
+        </div>
+      </button>
+
+
+      <button class="option" onclick="selectDocument('Driver License', this)">
+        <div class="option-icon">🚗</div>
+        <div>
+          <strong>Driver License</strong>
+          <small>Driver license identification</small>
+        </div>
+      </button>
+
+
+      <button onclick="continueIdentity()">
+        Continue →
+      </button>
+
+    </section>
+
+
+    <!-- CAMERA -->
+    <section id="face" class="screen">
+
+      <button class="back" onclick="stopCamera(); showScreen('verify')">
+        ← Back
+      </button>
+
+      <div class="page-header">
+        <span>STEP 2 OF 3</span>
+        <h1>Face & Liveness 👤</h1>
+        <p>Complete the live camera challenge.</p>
+      </div>
+
+
+      <div class="camera-box">
+
+        <div id="cameraPlaceholder">
+          <div class="face-icon">👤</div>
+          <strong>Camera Ready</strong>
+          <p>Use your front camera</p>
+        </div>
+
+        <video
+          id="camera"
+          autoplay
+          playsinline
+          muted>
+        </video>
+
+      </div>
+
+
+      <div id="livenessStatus" class="status">
+        Press Start Camera
+      </div>
+
+
+      <button id="cameraButton" onclick="startCamera()">
+        📷 Start Camera
+      </button>
+
+
+      <button
+        id="livenessButton"
+        class="secondary hidden"
+        onclick="completeLiveness()">
+
+        ✓ Complete Liveness
+
+      </button>
+
+    </section>
+
+
+    <!-- VOTE -->
+    <section id="vote" class="screen">
+
+      <div class="page-header">
+        <span>STEP 3 OF 3</span>
+        <h1>Cast Your Vote 🗳️</h1>
+        <p>Select one party or candidate.</p>
+      </div>
+
+
+      <button class="option vote-option"
+        onclick="selectVote('Party A', this)">
+
+        <div class="option-icon">🔵</div>
+
+        <div>
+          <strong>Party A</strong>
+          <small>Candidate A</small>
+        </div>
+
+      </button>
+
+
+      <button class="option vote-option"
+        onclick="selectVote('Party B', this)">
+
+        <div class="option-icon">🟢</div>
+
+        <div>
+          <strong>Party B</strong>
+          <small>Candidate B</small>
+        </div>
+
+      </button>
+
+
+      <button class="option vote-option"
+        onclick="selectVote('Party C', this)">
+
+        <div class="option-icon">🟠</div>
+
+        <div>
+          <strong>Party C</strong>
+          <small>Candidate C</small>
+        </div>
+
+      </button>
+
+
+      <button onclick="reviewVote()">
+        Review Vote →
+      </button>
+
+    </section>
+
+
+    <!-- CONFIRM -->
+    <section id="confirm" class="screen">
+
+      <button class="back" onclick="showScreen('vote')">
+        ← Change Vote
+      </button>
+
+      <div class="page-header">
+        <h1>Confirm Your Vote</h1>
+        <p>Review your selection before confirming.</p>
+      </div>
+
+
+      <div class="card center">
+
+        <div class="big-icon">🗳️</div>
+
+        <h2 id="confirmParty">
+          No Party Selected
+        </h2>
+
+        <p>
+          Your selection will be submitted
+          in this prototype.
+        </p>
+
+      </div>
+
+
+      <button onclick="confirmVote()">
+        ✓ Confirm Vote
+      </button>
+
+    </section>
+
+
+    <!-- SUCCESS -->
+    <section id="success" class="screen center">
+
+      <div class="success-icon">✓</div>
+
+      <h1>Vote Submitted!</h1>
+
+      <p>Your prototype vote was recorded.</p>
+
+
+      <div class="card">
+
+        <strong>Vote Receipt</strong>
+
+        <h2 id="receiptId">-</h2>
+
+        <p id="voterInfo">
+          Verified Voter
+        </p>
+
+      </div>
+
+
+      <button onclick="openResults()">
+        📊 View Results
+      </button>
+
+
+      <button class="secondary" onclick="showScreen('home')">
+        Back Home
+      </button>
+
+    </section>
+
+
+    <!-- RESULTS -->
+    <section id="results" class="screen">
+
+      <button class="back" onclick="showScreen('home')">
+        ← Home
+      </button>
+
+
+      <div class="page-header">
+        <h1>Election Results 📊</h1>
+        <p>Aggregated prototype results.</p>
+      </div>
+
+
+      <div id="resultsList"></div>
+
+
+      <div class="card center">
+
+        <strong>Total Votes</strong>
+
+        <h1 id="totalVotes">0</h1>
+
+        <p id="winnerText">
+          No votes yet
+        </p>
+
+      </div>
+
+
+      <button class="secondary" onclick="resetDemo()">
+        🔄 Reset Demo Results
+      </button>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
